@@ -16,7 +16,7 @@ jobs:
         run: echo $(cat /proc/sys/kernel/random/uuid) > UUID.txt
       
       - name: 'Commit Files'
-        id: commit
+        id: 提交
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

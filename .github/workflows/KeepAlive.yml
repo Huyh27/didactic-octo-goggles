@@ -16,16 +16,17 @@ jobs:
         run: echo $(cat /proc/sys/kernel/random/uuid) > UUID.txt
       
       - name: 'Commit Files'
-        id: commit  # 唯一修改：中文字符ID改为英文字符
+        id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .
           git diff --quiet && git diff --staged --quiet || git commit -am '是否继续白嫖：[是] —— 继续白嫖成功！'
-          echo ::set-output name=status::success
+          # 替换弃用的set-output命令
+          echo "status=success" >> $GITHUB_OUTPUT
            
       - name: 'GitHub Push'
-        if: steps.commit.output.status != 'success'  # 引用相应修改
+        if: ${{ steps.commit.outputs.status != 'success' }}
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
